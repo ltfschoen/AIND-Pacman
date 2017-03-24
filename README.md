@@ -11,12 +11,40 @@
 * Switch to Miniconda environment
     `source activate aind`
 * Install dependencies `python -m pip install mypy typing`
-* IntelliJ: File > Project Structure > Project Settings > Project > Project SDK > Python 2.7 (~/miniconda3/bin/python)
+* IntelliJ: File > Project Structure > Project Settings > Project > Project SDK > Python 3.6 (~/miniconda3/bin/python)
 * Review possible commands in search/commands.txt:
 * Change into the search directory `cd search`
 * Show Help of possible commands `python pacman.py -h`
+* Play Pacman and use arrow keys to control and capture ghosts `python pacman.py`
+* Run GoWest agent on map with no turning required `python pacman.py --layout testMaze --pacman GoWestAgent`
+* Run GoWest agent on map with turning required `python pacman.py --layout tinyMaze --pacman GoWestAgent`
+* Run SearchAgent using tinyMazeSearch Algorithm that plans a path to navigate maze successfully
+    `python pacman.py -l tinyMaze -p SearchAgent -a fn=tinyMazeSearch`
 * Run Program with a possible command: `python pacman.py --layout smallClassic --zoom 2`
 * Run MyPy Linter with `mypy search/pacman.py`
+
+### IntelliJ Debugging Setup
+
+* Create new Python debug configuration script
+* Select `python.py` as the Script
+* Add ` -l tinyMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5` ad the script parameters
+* Select Python 3.6 specified interpreter (i.e. Miniconda Python 3.6)
+* Ensure that `.py` type files are being included. Press CMD+, then go to Editor > File Types > Python and
+add `.py` in addition to `.pyw` that may be the only one that already exists. Click OK and wait for IntelliJ to reindex
+* Now you can set breakpoints in the search.py file and run Debug
+
+### Questions
+
+* Goal: Run Algorithms I create that formulate a plan to navigate the maze
+
+* Question 1: DFS Algorithm using Graph Search and avoid expainding previously
+visited states:
+    `python pacman.py -l tinyMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
+
+### Hints
+
+* Try solving DFS Algorithm first
+* Use Stack, Queue and PriorityQueue types in util.py
 
 ### Objective
 
