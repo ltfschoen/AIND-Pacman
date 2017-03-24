@@ -112,80 +112,120 @@ def depthFirstSearch(problem):
   print "Start's successors:", problem.getSuccessors(problem.getStartState())
   """
 
-  print ("Start: {}".format(problem.getStartState()))
-  print ("Is the start a goal? {}".format(problem.isGoalState(problem.getStartState())))
-  print ("Start's successors: {}".format(problem.getSuccessors(problem.getStartState())))
+  # MY INITIAL APPROACH
+  #
+  # print ("Start: {}".format(problem.getStartState()))
+  # print ("Is the start a goal? {}".format(problem.isGoalState(problem.getStartState())))
+  # print ("Start's successors: {}".format(problem.getSuccessors(problem.getStartState())))
+  #
+  # # Note: Running `python pacman.py -l tinyMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
+  # # runs a PositionSearchProblem in searchAgents.py, which is passed into this DFS method as
+  # # argument 'problem'. Familiarise with the properties of the PositionSearchProblem class
+  #
+  # # Note: Running `python pacman.py -l mediumMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
+  # # should have length 130
+  #
+  # # Note: Try using Stack data structure in util.py since DFS uses LIFO
+  # # Use Stack for storing what though??
+  #
+  # # Initialisations including current state and expanding it and adding its successor nodes to frontier
+  # state_initial = problem.getStartState()
+  # frontier = problem.getSuccessors(state_initial) # i.e. [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
+  # explored_set = [] # list of coordinates only
+  # state_next_chosen = ()
+  # actions = []
+  # finished = False
+  #
+  # # # Add initial node to the explored set
+  # # explored_set.append(state_initial)
+  #
+  # # Loop
+  # while not finished:
+  #
+  #   print ("Length of explored set: {}".format(len(explored_set)))
+  #
+  #   # Return failure if frontier is empty
+  #   if len(frontier) == 0:
+  #       print("Failed to find Goal State")
+  #       finished = True
+  #       return []
+  #
+  #   # Choose leaf node and remove it from frontier
+  #   state_next_chosen = random.choice(frontier)
+  #   frontier.remove(state_next_chosen)
+  #
+  #   # Return solution if chosen leaf node contains a goal state
+  #   if problem.isGoalState(state_next_chosen[0]):
+  #       print("Successfully found Goal State")
+  #       actions.append(state_next_chosen)
+  #       finished = True
+  #       return actions
+  #
+  #   # Add chosen leaf node to the explored set
+  #   explored_set.append(state_next_chosen[0])
+  #
+  #   # Get successor nodes of chosen leaf and extra coords from each tuple's first element
+  #   successors = problem.getSuccessors(state_next_chosen[0])
+  #
+  #   # Get successors coords and frontiers coords
+  #   successors_coords = [s[0] for s in successors]
+  #   frontiers_coords = [f[0] for f in frontier]
+  #
+  #   # Filter the successors (tuples in list) by removing any that already exist
+  #   # in the frontier array or the expored set array
+  #   successors_coords_already_in_frontier = list(set(successors_coords) & set(frontiers_coords))
+  #
+  #   successors_coords_not_already_in_frontier = delete_by_values(successors_coords, successors_coords_already_in_frontier)
+  #   successors_coords_already_in_explored_set = list(set(successors_coords_not_already_in_frontier).intersection(explored_set))
+  #   successors_coords_not_already_in_frontier_or_explored_set = delete_by_values(successors_coords_not_already_in_frontier, successors_coords_already_in_explored_set)
+  #
+  #   # Retrieve tuples with coords (first element) matching the list of successors coords not already in frontier or explored set
+  #   successors_not_already_in_frontier_or_explored_set = [tup for tup in successors if tup[0] in successors_coords_not_already_in_frontier_or_explored_set]
+  #
+  #   # Add the filtered list of successor nodes to the frontier to expand the chosen leaf node
+  #   for s in successors_not_already_in_frontier_or_explored_set:
+  #       frontier.append(s)
+  #
+  # # Return Sequence of Actions as an array
+  # return actions
 
-  # Note: Running `python pacman.py -l tinyMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
-  # runs a PositionSearchProblem in searchAgents.py, which is passed into this DFS method as
-  # argument 'problem'. Familiarise with the properties of the PositionSearchProblem class
+  # ALTERNATIVE APPROACH
 
-  # Note: Running `python pacman.py -l mediumMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
-  # should have length 130
+  # function GRAPH-SEARCH(problem)
+  # returns a solution, or failure
+  def is_goal(node):
+      return problem.isGoalState(node)
 
-  # Note: Try using Stack data structure in util.py since DFS uses LIFO
-  # Use Stack for storing what though??
+  # initialize the frontier using the initial state of problem
+  init_state = problem.getStartState()
+  stack = util.Stack()
+  stack.push((init_state, []))
 
-  # Initialisations including current state and expanding it and adding its successor nodes to frontier
-  state_initial = problem.getStartState()
-  frontier = problem.getSuccessors(state_initial) # i.e. [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
-  explored_set = [] # list of coordinates only
-  state_next_chosen = ()
-  actions = []
-  finished = False
+  # initialize the explored set to be empty
+  visited = set()
 
-  # # Add initial node to the explored set
-  # explored_set.append(state_initial)
+  # loop do
+  while not stack.isEmpty():
 
-  # Loop
-  while not finished:
+      # choose a leaf node and remove it from the frontier
+      (node, path) = stack.pop()
 
-    print ("Length of explored set: {}".format(len(explored_set)))
+      # if the node contains a goal state then return corresponding solution
+      if is_goal(node):
+          # returns a solution
+          return path
 
-    # Return failure if frontier is empty
-    if len(frontier) == 0:
-        print("Failed to find Goal State")
-        finished = True
-        return []
+      # add the node to explored set
+      visited.add(node)
 
-    # Choose leaf node and remove it from frontier
-    state_next_chosen = random.choice(frontier)
-    frontier.remove(state_next_chosen)
-
-    # Return solution if chosen leaf node contains a goal state
-    if problem.isGoalState(state_next_chosen[0]):
-        print("Successfully found Goal State")
-        actions.append(state_next_chosen)
-        finished = True
-        return actions
-
-    # Add chosen leaf node to the explored set
-    explored_set.append(state_next_chosen[0])
-
-    # Get successor nodes of chosen leaf and extra coords from each tuple's first element
-    successors = problem.getSuccessors(state_next_chosen[0])
-
-    # Get successors coords and frontiers coords
-    successors_coords = [s[0] for s in successors]
-    frontiers_coords = [f[0] for f in frontier]
-
-    # Filter the successors (tuples in list) by removing any that already exist
-    # in the frontier array or the expored set array
-    successors_coords_already_in_frontier = list(set(successors_coords) & set(frontiers_coords))
-
-    successors_coords_not_already_in_frontier = delete_by_values(successors_coords, successors_coords_already_in_frontier)
-    successors_coords_already_in_explored_set = list(set(successors_coords_not_already_in_frontier).intersection(explored_set))
-    successors_coords_not_already_in_frontier_or_explored_set = delete_by_values(successors_coords_not_already_in_frontier, successors_coords_already_in_explored_set)
-
-    # Retrieve tuples with coords (first element) matching the list of successors coords not already in frontier or explored set
-    successors_not_already_in_frontier_or_explored_set = [tup for tup in successors if tup[0] in successors_coords_not_already_in_frontier_or_explored_set]
-
-    # Add the filtered list of successor nodes to the frontier to expand the chosen leaf node
-    for s in successors_not_already_in_frontier_or_explored_set:
-        frontier.append(s)
-
-  # Return Sequence of Actions as an array
-  return actions
+      # expand chosen node, adding resulting nodes to frontier
+      successors = problem.getSuccessors(node)
+      for state, action, cost in successors:
+          # only if not in frontier or explored set
+          if state not in visited:
+              stack.push((state, path + [action]))
+  # if the frontier is empty then return failure
+  return []
 
 def breadthFirstSearch(problem):
   """
