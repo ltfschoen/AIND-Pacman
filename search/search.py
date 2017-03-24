@@ -120,29 +120,27 @@ def depthFirstSearch(problem):
   # runs a PositionSearchProblem in searchAgents.py, which is passed into this DFS method as
   # argument 'problem'. Familiarise with the properties of the PositionSearchProblem class
 
-  # Note: Try using Stack data structure in util.py since DFS uses LIFO
+  # Note: Running `python pacman.py -l mediumMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
+  # should have length 130
 
-  # Initialise directions
-  from game import Directions
-  n = Directions.NORTH
-  s = Directions.SOUTH
-  e = Directions.EAST
-  w = Directions.WEST
-  z = Directions.STOP
+  # Note: Try using Stack data structure in util.py since DFS uses LIFO
+  # Use Stack for storing what though??
 
   # Initialisations including current state and expanding it and adding its successor nodes to frontier
   state_initial = problem.getStartState()
-  frontier = problem.getSuccessors(problem.getStartState()) # i.e. [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
+  frontier = problem.getSuccessors(state_initial) # i.e. [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
   explored_set = [] # list of coordinates only
   state_next_chosen = ()
   actions = []
   finished = False
 
-  # Add initial node to the explored set
-  explored_set.append(state_initial)
+  # # Add initial node to the explored set
+  # explored_set.append(state_initial)
 
   # Loop
   while not finished:
+
+    print ("Length of explored set: {}".format(len(explored_set)))
 
     # Return failure if frontier is empty
     if len(frontier) == 0:
@@ -160,6 +158,9 @@ def depthFirstSearch(problem):
         actions.append(state_next_chosen)
         finished = True
         return actions
+
+    # Add chosen leaf node to the explored set
+    explored_set.append(state_next_chosen[0])
 
     # Get successor nodes of chosen leaf and extra coords from each tuple's first element
     successors = problem.getSuccessors(state_next_chosen[0])
@@ -182,9 +183,6 @@ def depthFirstSearch(problem):
     # Add the filtered list of successor nodes to the frontier to expand the chosen leaf node
     for s in successors_not_already_in_frontier_or_explored_set:
         frontier.append(s)
-
-    # Add chosen leaf node to the explored set
-    explored_set.append(state_next_chosen[0])
 
   # Return Sequence of Actions as an array
   return actions
