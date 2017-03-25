@@ -191,6 +191,14 @@ def depthFirstSearch(problem):
 
   # ALTERNATIVE APPROACH
 
+  # Note:
+  #
+  # An essential resource for help deriving the appropriate code for Pacman is
+  # the Python code derived from all the algorithms' pseudo-code in the AIMA textbook
+  # found at this link https://github.com/aimacode/aima-python/blob/master/search.py.
+  # For instance to solve Question 1 just take a look at the code for the function
+  # `graph_search` and modify.
+
   # function GRAPH-SEARCH(problem)
   # returns a solution, or failure
   def is_goal(node):
