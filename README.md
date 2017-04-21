@@ -41,6 +41,40 @@ add `.py` in addition to `.pyw` that may be the only one that already exists. Cl
 visited states:
     `python pacman.py -l tinyMaze -p SearchAgent -a fn=depthFirstSearch -z 0.5`
 
+### Autograder
+
+* Download autograder from [here](http://ai.berkeley.edu/search.html)
+* Copied/pasted the following as a minimum to autograde Question 1
+
+```
+test_cases/CONFIG
+test_cases/q1/*
+autograder.py
+grading.py
+projectParams.py
+searchTestClasses.py
+testClasses.py
+testParser.py
+```
+
+* Run the following commands to convert code from Python 2 to Python 3
+```
+2to3 autograder.py -w
+2to3 grading.py -w
+2to3 projectParams.py -w
+2to3 searchTestClasses.py -w
+2to3 testClasses.py -w
+2to3 testParser.py -w
+```
+
+* Delete all the `.bak` files that are generated
+
+* Show available autograder commands:
+`python autograder.py -h`
+
+* Run the autograder against Question 1
+`python autograder.py --question=q1`
+
 ### Hints
 
 * Try solving DFS Algorithm first
